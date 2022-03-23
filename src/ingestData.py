@@ -17,8 +17,8 @@ d1 = today.strftime("%d/%m/%Y")
 DOWNLOAD_ROOT = "https://raw.githubusercontent.com/ageron/handson-ml/master/"
 HOUSING_PATH = os.path.join("datasets", "housing")
 HOUSING_URL = DOWNLOAD_ROOT + "datasets/housing/housing.tgz"
-saveTrainTestPath = os.path.join('datasets', 'data')
-logPath = os.path.join('logs', d1)
+saveTrainTestPath = os.path.join("datasets", "data")
+logPath = os.path.join("logs", d1)
 logLevel = logging.INFO
 consoleLog = 1
 
@@ -32,53 +32,91 @@ def fetch_housing_data(housing_url=HOUSING_URL, housing_path=HOUSING_PATH):
     housing_tgz.extractall(path=housing_path)
     housing_tgz.close()
 
+
 def load_housing_data(housing_path=HOUSING_PATH):
     logger.debug("Inside the load house data function")
     csv_path = os.path.join(housing_path, "housing.csv")
     return pd.read_csv(csv_path)
 
+
 def income_cat_proportions(data):
     logger.debug("Inside the income cat function")
     return data["income_cat"].value_counts() / len(data)
 
-def data_prepared(data, fileName = 'train'):
+
+def data_prepared(data, fileName="train"):
     logger.debug("Inside the data prepared function")
-    dataX = data.drop('median_house_value', axis = 1)
-    dataY = data['median_house_value'].copy()
-    dataNum = dataX.drop('ocean_proximity', axis = 1)
-    oceanProximityColumn = dataX['ocean_proximity'].copy()
-    simpleImputer = SimpleImputer(strategy = "median")
+    dataX = data.drop("median_house_value", axis=1)
+    dataY = data["median_house_value"].copy()
+    dataNum = dataX.drop("ocean_proximity", axis=1)
+    oceanProximityColumn = dataX["ocean_proximity"].copy()
+    simpleImputer = SimpleImputer(strategy="median")
     simpleImputer.fit(dataNum)
     dataTr = simpleImputer.transform(dataNum)
-    dataTr = pd.DataFrame(dataTr, columns=dataNum.columns, index = dataNum.index)
+    dataTr = pd.DataFrame(dataTr, columns=dataNum.columns, index=dataNum.index)
     dataTr["rooms_per_household"] = dataTr["total_rooms"] / dataTr["households"]
     dataTr["bedrooms_per_room"] = dataTr["total_bedrooms"] / dataTr["total_rooms"]
     dataTr["population_per_household"] = dataTr["population"] / dataTr["households"]
-    dataPrepared = dataTr.join(pd.get_dummies(oceanProximityColumn, drop_first=True))
-    dataPrepared['median_house_value'] = dataY
+    dataPrepared = dataTr.join(
+        pd.get_dummies(oceanProximityColumn, drop_first=True),
+    )
+    dataPrepared["median_house_value"] = dataY
     logger.debug("data from " + fileName)
     logger.info(dataPrepared.head())
     try:
         if not os.path.isdir(saveTrainTestPath):
             os.makedirs(saveTrainTestPath)
-        dataPrepared.to_csv(os.path.join(saveTrainTestPath, fileName + '.csv'))
+        dataPrepared.to_csv(os.path.join(saveTrainTestPath, fileName + ".csv"))
     except Exception as e:
-        logger.error('Error occured')
+        logger.error("Error occured")
         logger.error(e)
-    
+
+
 try:
-    argumentParser = argparse.ArgumentParser(prog = 'ingestData', description = 'Ingesting Data')
-    argumentParser.add_argument('--folder', action = 'store', type = str, required = False)
-    argumentParser.add_argument('--trainfile', action = 'store', type = str, required = False)
-    argumentParser.add_argument('--testfile', action = 'store', type = str, required = False)
-    argumentParser.add_argument('--log_level', action = 'store', type = str, required = False)
-    argumentParser.add_argument('--log_path', action = 'store', type = str, required = False)
-    argumentParser.add_argument('--no_console_log', action = 'store_true',  required = False)
+    argumentParser = argparse.ArgumentParser(
+        prog="ingestData",
+        description="Ingesting Data",
+    )
+    argumentParser.add_argument(
+        "--folder",
+        action="store",
+        type=str,
+        required=False,
+    )
+    argumentParser.add_argument(
+        "--trainfile",
+        action="store",
+        type=str,
+        required=False,
+    )
+    argumentParser.add_argument(
+        "--testfile",
+        action="store",
+        type=str,
+        required=False,
+    )
+    argumentParser.add_argument(
+        "--log_level",
+        action="store",
+        type=str,
+        required=False,
+    )
+    argumentParser.add_argument(
+        "--log_path",
+        action="store",
+        type=str,
+        required=False,
+    )
+    argumentParser.add_argument(
+        "--no_console_log",
+        action="store_true",
+        required=False,
+    )
     arguments = argumentParser.parse_args()
     if arguments.folder:
-        saveTrainTestPath = os.path.join('datasets', arguments.folder)
+        saveTrainTestPath = os.path.join("datasets", arguments.folder)
     if arguments.log_path:
-        logFolder = os.path.join(arguments.log_path, 'ingestData.txt')
+        logFolder = os.path.join(arguments.log_path, "ingestData.txt")
 
     print(arguments)
 
@@ -102,26 +140,24 @@ try:
         logPath = os.path.join(arguments.log_path, "logs")
 
     if not os.path.isdir(logPath):
-            os.makedirs(logPath)
-    
+        os.makedirs(logPath)
+
     logFile = os.path.join(logPath, "ingestData.log")
 
     if arguments.no_console_log:
         consoleLog = 0
 
     try:
-        logging.basicConfig(filename = logFile, level = logLevel)
+        logging.basicConfig(filename=logFile, level=logLevel)
         logger = logging.getLogger("ingestData")
     except Exception as e:
         print("error occured")
         print(e)
-    
+
     if consoleLog:
         ch = logging.StreamHandler()
         ch.setLevel(logLevel)
-        formatter = logging.Formatter(
-            "%(asctime)s - %(name)s -%(levelname)s - %(message)s"
-        )
+        formatter = logging.Formatter("%(asctime)s - %(name)s -%(levelname)s - %(message)s")
         ch.setFormatter(formatter)
         logger.addHandler(ch)
 
@@ -145,8 +181,12 @@ try:
         strat_test_set = housing.loc[test_index]
     logger.debug("Strat Train and Test Set Generated")
 
-    train_set, test_set = train_test_split(housing, test_size=0.2, random_state=42)
-    logger.debug('Train and Test Set Generated')
+    train_set, test_set = train_test_split(
+        housing,
+        test_size=0.2,
+        random_state=42,
+    )
+    logger.debug("Train and Test Set Generated")
 
     compare_props = pd.DataFrame(
         {
@@ -161,21 +201,21 @@ try:
     compare_props["Strat. %error"] = (
         100 * compare_props["Stratified"] / compare_props["Overall"] - 100
     )
-    logger.info('compare props')
+    logger.info("compare props")
     logger.info(compare_props)
 
     for set_ in (strat_train_set, strat_test_set):
         set_.drop("income_cat", axis=1, inplace=True)
-    
+
     if arguments.trainfile:
         data_prepared(strat_train_set, arguments.trainfile)
     else:
         data_prepared(strat_train_set)
-    
+
     if arguments.testfile:
         data_prepared(strat_test_set, arguments.testfile)
     else:
-        data_prepared(strat_test_set, 'test')
+        data_prepared(strat_test_set, "test")
     # data_prepared(strat_train_set)
     # data_prepared(strat_test_set, "test")
 
