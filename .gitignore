@@ -1,2 +1,6 @@
 *.pyc
 *.csv
+*.pkl
+*.sav
+*.log
+artifacts
