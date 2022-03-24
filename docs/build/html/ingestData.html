@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>ingestData module &#8212; mle-train 0.4 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-ingestData">
+<span id="ingestdata-module"></span><h1>ingestData module<a class="headerlink" href="#module-ingestData" title="Permalink to this headline">¶</a></h1>
+<p>The ingest Data script allows us to import data from a remote repository 
+as a .tar file and then using the dataset to create a train and test data 
+upoin which we will train and test our models.</p>
+<section id="attributes">
+<h2>ATTRIBUTES<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>Folder<span class="classifier">str</span></dt><dd><p>This accepts the name of the folder you want to save your test and
+train datasets in.</p>
+</dd>
+<dt>Trainfile<span class="classifier">str</span></dt><dd><p>This accepts the name of the trainfile.</p>
+</dd>
+<dt>Testfile<span class="classifier">str</span></dt><dd><p>This accepts the name of the testfile.</p>
+</dd>
+<dt>Log Level<span class="classifier">str</span></dt><dd><p>This accepts the log level for the logger.</p>
+</dd>
+<dt>Log Path<span class="classifier">str</span></dt><dd><p>This accepts the path to where the log files will be stored into.</p>
+</dd>
+<dt>No console log<span class="classifier">str</span></dt><dd><p>This enables us to not output the logs in the console.</p>
+</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="ingestData.data_prepared">
+<span class="sig-prename descclassname"><span class="pre">ingestData.</span></span><span class="sig-name descname"><span class="pre">data_prepared</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'train'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingestData.html#data_prepared"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ingestData.data_prepared" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function is responsible for cleaning the dataset,
+fill the missing values, perform encoding on
+categorical variable and storing it in the given fileName.</p>
+<p>data : DataFrame
+fileName : str</p>
+<blockquote>
+<div><p>Name of the file</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ingestData.fetch_housing_data">
+<span class="sig-prename descclassname"><span class="pre">ingestData.</span></span><span class="sig-name descname"><span class="pre">fetch_housing_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">housing_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'https://raw.githubusercontent.com/ageron/handson-ml/master/datasets/housing/housing.tgz'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">housing_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'datasets/housing'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingestData.html#fetch_housing_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ingestData.fetch_housing_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetches the dataset from the url and extracts it to a given path.</p>
+<dl class="simple">
+<dt>housing_url<span class="classifier">str</span></dt><dd><p>URL from which the dataset has to be fetched</p>
+</dd>
+<dt>housing_path<span class="classifier">str</span></dt><dd><p>Path where the dataset has to be stored</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ingestData.income_cat_proportions">
+<span class="sig-prename descclassname"><span class="pre">ingestData.</span></span><span class="sig-name descname"><span class="pre">income_cat_proportions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingestData.html#income_cat_proportions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ingestData.income_cat_proportions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns value counts fraction of each income category.</p>
+<p>data : dataframe</p>
+<p>DataFrame</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ingestData.load_housing_data">
+<span class="sig-prename descclassname"><span class="pre">ingestData.</span></span><span class="sig-name descname"><span class="pre">load_housing_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">housing_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'datasets/housing'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingestData.html#load_housing_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ingestData.load_housing_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to read the csv file.</p>
+<dl class="simple">
+<dt>housing_path<span class="classifier">str</span></dt><dd><p>Path where the .csv exists</p>
+</dd>
+</dl>
+<p>DataFrame</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">mle-train</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Siddhant.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/ingestData.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
